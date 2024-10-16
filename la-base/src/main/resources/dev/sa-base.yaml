@@ -1,0 +1,17 @@
+spring:
+  jackson
+
+springdoc:
+  swagger-ui:
+    enabled: true
+    doc-expansion: none
+    tags-sorter: alpha
+    server-base-url:
+  api-docs:
+    enabled: true
+knife4j:
+  enable: true
+  basic:
+    enable: false
+    username: api
+    password: 123456
