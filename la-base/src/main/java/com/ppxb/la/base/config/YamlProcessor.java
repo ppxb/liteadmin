@@ -6,7 +6,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.boot.env.YamlPropertySourceLoader;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.io.Resource;
@@ -16,16 +15,15 @@ import java.io.IOException;
 
 @Slf4j
 @Configuration
-@Order(value = 0)
 public class YamlProcessor implements EnvironmentPostProcessor {
 
     private final YamlPropertySourceLoader loader = new YamlPropertySourceLoader();
 
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
-        var filePath = environment.getProperty("project.log-path");
+        var filePath = environment.getProperty("project.log-directory");
         if (StringUtil.isNotEmpty(filePath)) {
-            System.setProperty("project.log-path", filePath);
+            System.setProperty("project.log-directory", filePath);
         }
         var propertySources = environment.getPropertySources();
         this.loadProperty(propertySources);

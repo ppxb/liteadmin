@@ -22,7 +22,7 @@ public class SystemEnvironmentConfig implements Condition {
 
     @Override
     public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
-        return false;
+        return isDevOrTest(context);
     }
 
     private boolean isDevOrTest(ConditionContext context) {
