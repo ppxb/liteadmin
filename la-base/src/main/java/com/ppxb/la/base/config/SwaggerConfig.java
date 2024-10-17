@@ -44,19 +44,21 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI api() {
         return new OpenAPI()
-                .components(components())
+                .components(new Components()
+                        .addSecuritySchemes(RequestHeaderConst.TOKEN, new SecurityScheme()
+                                .type(SecurityScheme.Type.APIKEY)
+                                .in(SecurityScheme.In.HEADER)
+                                .name(RequestHeaderConst.TOKEN)))
                 .info(new Info()
                         .title("Lite Admin 接口文档")
-                        .contact(new Contact().name("ppxb").email("ppxb123@gmail.com").url("https://github.com/ppxb"))
+                        .contact(new Contact()
+                                .name("ppxb")
+                                .email("ppxb123@gmail.com")
+                                .url("https://github.com/ppxb"))
                         .version("v1.0")
                         .description("开箱即用的中后台管理系统")
                 )
                 .addSecurityItem(new SecurityRequirement().addList(RequestHeaderConst.TOKEN));
-    }
-
-    private Components components() {
-        return new Components()
-                .addSecuritySchemes(RequestHeaderConst.TOKEN, new SecurityScheme().type(SecurityScheme.Type.APIKEY).in(SecurityScheme.In.HEADER).name(RequestHeaderConst.TOKEN));
     }
 
     @Bean

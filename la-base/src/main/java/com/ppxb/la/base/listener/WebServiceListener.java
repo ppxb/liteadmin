@@ -6,63 +6,72 @@ import com.ppxb.la.base.common.code.ErrorCodeRegister;
 import com.ppxb.la.base.common.enumeration.SystemEnvironmentEnum;
 import com.ppxb.la.base.common.util.EnumUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.context.WebServerInitializedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Slf4j
 @Component
 @Order(value = 1000)
 public class WebServiceListener implements ApplicationListener<WebServerInitializedEvent> {
 
-    @Value("${reload.interval-seconds}")
-    private Integer intervalSeconds;
+    private static final String TITLE_TEMPLATE = "-------------[%s] 服务已成功启动 （%s started successfully）-------------";
+
+    private static final String LOG_TEMPLATE = """
+            
+            {}
+            \t当前启动环境:\t{},{}\
+            
+            \t返回码初始化:\t完成{}个返回码初始化\
+            
+            \t服务本机地址:\t{}\
+            
+            \t服务外网地址:\t{}\
+            
+            \tSwagger地址:\t{}\
+            
+            \tknife4j地址:\t{}\
+            
+            -------------------------------------------------------------------------------------
+            """;
 
     @Override
     public void onApplicationEvent(WebServerInitializedEvent event) {
-        var context = event.getApplicationContext();
         showProjectMessage(event);
     }
 
     private void showProjectMessage(WebServerInitializedEvent event) {
-        var context = event.getApplicationContext();
-        var env = context.getEnvironment();
+        var env = event.getApplicationContext().getEnvironment();
 
-        var ip = NetUtil.getLocalhost().getHostAddress();
+        var localhost = NetUtil.getLocalhost();
         var port = event.getWebServer().getPort();
-        var contextPath = env.getProperty("server.servlet.context-path");
-        if (contextPath == null) {
-            contextPath = "";
-        }
+
+        var contextPath = Optional.ofNullable(env.getProperty("server.servlet.context-path")).orElse("");
         var profile = env.getProperty("spring.profiles.active");
         var environmentEnum = EnumUtil.getEnumByValue(profile, SystemEnvironmentEnum.class);
         var projectName = env.getProperty("project.name");
-        var title = String.format("-------------[%s] 服务已成功启动 （%s started successfully）-------------", projectName, projectName);
 
         var codeCount = ErrorCodeRegister.initialize();
-        var localhostUrl = URLUtil.normalize(String.format("http://localhost:%d%s", port, contextPath), false, true);
-        var externalUrl = URLUtil.normalize(String.format("http://%s:%d%s", ip, port, contextPath), false, true);
-        var swaggerUrl = URLUtil.normalize(String.format("http://localhost:%d%s/swagger-ui/index.html", port, contextPath), false, true);
-        var knife4jUrl = URLUtil.normalize(String.format("http://localhost:%d%s/doc.html", port, contextPath), false, true);
-        log.warn("""
-                        
-                        {}
-                        \t当前启动环境:\t{},{}\
-                        
-                        \t返回码初始化:\t完成{}个返回码初始化\
-                        
-                        \t服务本机地址:\t{}\
-                        
-                        \t服务外网地址:\t{}\
-                        
-                        \tSwagger地址:\t{}\
-                        
-                        \tknife4j地址:\t{}\
-                        
-                        -------------------------------------------------------------------------------------
-                        """,
-                title, profile, environmentEnum.getDesc(), codeCount, localhostUrl, externalUrl, swaggerUrl, knife4jUrl);
+
+        var localhostUrl = buildUrl("localhost", port, contextPath);
+        var externalUrl = buildUrl(localhost.getHostAddress(), port, contextPath);
+        var swaggerUrl = buildUrl("localhost", port, contextPath, "swagger-ui/index.html");
+        var knife4jUrl = buildUrl("localhost", port, contextPath, "doc.html");
+
+        var title = String.format(TITLE_TEMPLATE, projectName, projectName);
+
+        log.warn(LOG_TEMPLATE, title, profile, environmentEnum.getDesc(), codeCount,
+                localhostUrl, externalUrl, swaggerUrl, knife4jUrl);
+    }
+
+    private String buildUrl(String host, int port, String contextPath, String... additionalPaths) {
+        var urlBuilder = new StringBuilder(String.format("http://%s:%d%s", host, port, contextPath));
+        for (String path : additionalPaths) {
+            urlBuilder.append("/").append(path);
+        }
+        return URLUtil.normalize(urlBuilder.toString(), false, true);
     }
 }

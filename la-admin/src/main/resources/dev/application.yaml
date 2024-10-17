@@ -1,6 +1,5 @@
 project:
   name: lite-admin
-  log-directory: ${localPath:/home}/logs/lite_admin/${project.name}/${spring.profiles.active}
 
 server:
   port: 9527
