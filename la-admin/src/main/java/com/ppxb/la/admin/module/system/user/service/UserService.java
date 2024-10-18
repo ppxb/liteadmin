@@ -1,6 +1,7 @@
 package com.ppxb.la.admin.module.system.user.service;
 
 import com.ppxb.la.admin.module.system.department.dao.DepartmentDao;
+import com.ppxb.la.admin.module.system.role.dao.RoleUserDao;
 import com.ppxb.la.admin.module.system.user.dao.UserDao;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
@@ -15,4 +16,7 @@ public class UserService {
 
     @Resource
     private DepartmentDao departmentDao;
+
+    @Resource
+    private RoleUserDao roleUserDao;
 }

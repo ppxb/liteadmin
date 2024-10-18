@@ -13,9 +13,9 @@ import java.util.List;
 @Data
 public class UserQueryForm extends PageParam {
 
-    @Schema(description = "关键词")
-    @Length(max = 20, message = "关键词不能超过20个字符")
-    private String keyword;
+    @Schema(description = "关键字")
+    @Length(max = 20, message = "关键字不能超过20个字符")
+    private String keywords;
 
     @Schema(description = "部门ID")
     private Long departmentId;
