@@ -7,7 +7,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum UserErrorCode implements ErrorCode {
 
-    PARAM_ERROR(30001, "参数错误");
+    PARAM_ERROR(30001, "参数错误"),
+
+    DATA_NOT_EXIST(30002, "数据不存在");
 
     private final int code;
 
