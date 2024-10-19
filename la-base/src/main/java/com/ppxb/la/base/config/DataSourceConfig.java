@@ -132,7 +132,7 @@ public class DataSourceConfig {
 
         try {
             factoryBean.setMapperLocations(new PathMatchingResourcePatternResolver()
-                    .getResources("classpath*:mapper/*.xml"));
+                    .getResources("classpath*:/mapper/**/*.xml"));
         } catch (IOException e) {
             log.error("设置mapper路径失败", e);
             throw new RuntimeException("无法设置 mapper 文件路径", e);

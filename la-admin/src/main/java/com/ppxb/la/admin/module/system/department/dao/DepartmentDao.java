@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public interface DepartmentDao extends BaseMapper<DepartmentEntity> {
 
-    Integer countSubDepartment(@Param("departmentId") Long departmentId);
-
     List<DepartmentVO> listAll();
+
+    Integer countSubDepartment(@Param("departmentId") Long departmentId);
 }

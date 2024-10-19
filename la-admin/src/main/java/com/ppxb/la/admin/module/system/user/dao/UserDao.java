@@ -26,7 +26,7 @@ public interface UserDao extends BaseMapper<UserEntity> {
      * @author ppxb
      * @Date 2024/10/17 19:17
      */
-    List<UserVO> queryUser(Page page, @Param("queryForm") UserQueryForm queryForm, @Param("departmentIdList") List<Long> departmentIdList);
+    List<UserVO> queryUser(Page<?> page, @Param("queryForm") UserQueryForm queryForm, @Param("departmentIdList") List<Long> departmentIdList);
 
     List<UserVO> selectUserByDisabledAndDeleted(@Param("disabledFlag") Boolean disabledFlag, @Param("deletedFlag") Boolean deletedFlag);
 
@@ -49,7 +49,7 @@ public interface UserDao extends BaseMapper<UserEntity> {
 
     List<UserVO> listAll();
 
-    Integer countByDepartmentId(@Param("departmentId") Long departmentId);
+    Integer countByDepartmentId(@Param("departmentId") Long departmentId, @Param("deletedFlag") Boolean deletedFlag);
 
     List<UserVO> getUserByIds(@Param("userIds") Collection<Long> userIds);
 
