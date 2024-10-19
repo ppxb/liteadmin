@@ -1,5 +1,6 @@
 project:
   name: lite-admin
+  log-directory: ./logs/${project.name}/${spring.profiles.active}
 
 server:
   port: 9527
@@ -11,7 +12,7 @@ spring:
     active: '@profiles.active@'
 
   datasource:
-    url: jdbc:p6spy:mysql://127.0.0.1:3306/lite_admin?autoReconnect=true&useServerPreparedStmts=false&rewriteBatchedStatements=true&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+    url: jdbc:p6spy:mysql://127.0.0.1:3306/lite_admin?allowPublicKeyRetrieval=true&autoReconnect=true&useServerPreparedStmts=false&rewriteBatchedStatements=true&characterEncoding=UTF-8&useSSL=false&allowMultiQueries=true&serverTimezone=Asia/Shanghai
     username: root
     password: 123456
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver

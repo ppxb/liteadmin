@@ -18,24 +18,16 @@ import java.util.Optional;
 @Order(value = 1000)
 public class WebServiceListener implements ApplicationListener<WebServerInitializedEvent> {
 
-    private static final String TITLE_TEMPLATE = "-------------[%s] 服务已成功启动 （%s started successfully）-------------";
-
     private static final String LOG_TEMPLATE = """
             
-            {}
-            \t当前启动环境:\t{},{}\
-            
-            \t返回码初始化:\t完成{}个返回码初始化\
-            
-            \t服务本机地址:\t{}\
-            
-            \t服务外网地址:\t{}\
-            
-            \tSwagger地址:\t{}\
-            
-            \tknife4j地址:\t{}\
-            
-            -------------------------------------------------------------------------------------
+            🚀 {} started successfully 🎉 🎉 🎉
+            🌍 Env: {}[{}]
+            🔢 Return Codes: {} codes have been initialized
+            🏠 Local: {}
+            🌐 Web: {}
+            📚 API Docs:
+                Swagger: {}
+                knife4j: {}
             """;
 
     @Override
@@ -61,9 +53,8 @@ public class WebServiceListener implements ApplicationListener<WebServerInitiali
         var swaggerUrl = buildUrl("localhost", port, contextPath, "swagger-ui/index.html");
         var knife4jUrl = buildUrl("localhost", port, contextPath, "doc.html");
 
-        var title = String.format(TITLE_TEMPLATE, projectName, projectName);
 
-        log.warn(LOG_TEMPLATE, title, profile, environmentEnum.getDesc(), codeCount,
+        log.warn(LOG_TEMPLATE, projectName, profile, environmentEnum.getDesc(), codeCount,
                 localhostUrl, externalUrl, swaggerUrl, knife4jUrl);
     }
 
