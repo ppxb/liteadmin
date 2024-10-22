@@ -8,25 +8,17 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-@TableName(value = "t_role_user")
-public class RoleUserEntity {
+@TableName(value = "t_role_menu")
+public class RoleMenuEntity {
 
     @TableId(type = IdType.AUTO)
-    private Long id;
+    private Long roleMenuId;
 
     private Long roleId;
 
-    private Long userId;
+    private Long menuId;
 
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
-
-    public RoleUserEntity() {
-    }
-
-    public RoleUserEntity(Long roleId, Long userId) {
-        this.roleId = roleId;
-        this.userId = userId;
-    }
 }

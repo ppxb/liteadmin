@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ppxb.la.admin.module.system.menu.dao.MenuDao">
+    <delete id="deleteByMenuIdList">
+        <if test="menuIdList != null and menuIdList.size > 0">
+            <foreach collection="menuIdList" item="item" separator=";">
+                UPDATE t_menu
+                SET deleted_flag = #{deletedFlag},
+                update_user_id = #{updateUserId}
+                WHERE menu_id = #{item}
+            </foreach>
+        </if>
+    </delete>
+
+    <select id="getByMenuName" resultType="com.ppxb.la.admin.module.system.menu.domain.entity.MenuEntity">
+        SELECT *
+        FROM t_menu
+        WHERE menu_name = #{menuName}
+          AND parent_id = #{parentId}
+          AND deleted_flag = #{deletedFlag}
+        LIMIT 1
+    </select>
+
+    <select id="queryMenuList" resultType="com.ppxb.la.admin.module.system.menu.domain.vo.MenuVO">
+        SELECT *
+        FROM t_menu
+        WHERE deleted_flag=#{deletedFlag}
+        <if test="disabledFlag != null">
+            AND disabled_flag = #{disabledFlag}
+        </if>
+        <if test="menuTypeList != null and menuTypeList.size > 0">
+            AND menu_type IN
+            <foreach collection="menuTypeList" open="(" close=")" item="item" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        ORDER BY parent_id DESC,sort ASC
+    </select>
+
+    <select id="getPointListByMenuId" resultType="com.ppxb.la.admin.module.system.menu.domain.entity.MenuEntity">
+        SELECT *
+        FROM t_menu
+        WHERE parent_id = #{menuId}
+          AND deleted_flag = #{deletedFlag}
+          AND menu_type = #{menuType}
+    </select>
+
+    <!--  TODO: add queryMenuByUserId-->
+
+    <select id="queryMenuByType" resultType="com.ppxb.la.admin.module.system.menu.domain.entity.MenuEntity">
+        SELECT *
+        FROM t_menu
+        WHERE disabled_flag = #{disabledFlag}
+          AND deleted_flag = #{deletedFlag}
+          AND menu_type = #{menuType}
+    </select>
+
+    <select id="getByWebPerms" resultType="com.ppxb.la.admin.module.system.menu.domain.entity.MenuEntity">
+        SELECT *
+        FROM t_menu
+        WHERE web_perms = #{webPerms}
+          AND deleted_flag = #{deletedFlag}
+        LIMIT 1
+    </select>
+
+    <select id="selectMenuIdByParentIdList" resultType="java.lang.Long">
+        <if test="menuIdList != null and menuIdList.size > 0">
+            SELECT menu_Id FROM t_menu WHERE parent_id IN
+            <foreach collection="menuIdList" open="(" close=")" item="item" separator=",">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+</mapper>

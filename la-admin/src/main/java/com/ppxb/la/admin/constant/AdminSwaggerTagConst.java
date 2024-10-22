@@ -6,5 +6,7 @@ public class AdminSwaggerTagConst {
         public static final String SYSTEM_USER = "系统-用户管理";
 
         public static final String SYSTEM_DEPARTMENT = "系统-部门管理";
+
+        public static final String SYSTEM_MENU = "系统-目录管理";
     }
 }

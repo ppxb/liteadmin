@@ -33,7 +33,6 @@
         <mybatis-plus.version>3.5.8</mybatis-plus.version>
         <mysql-connector-j.version>8.0.33</mysql-connector-j.version>
         <druid.version>1.2.23</druid.version>
-        <p6spy.version>3.9.1</p6spy.version>
     </properties>
 
     <dependencyManagement>
@@ -135,12 +134,6 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid</artifactId>
                 <version>${druid.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>p6spy</groupId>
-                <artifactId>p6spy</artifactId>
-                <version>${p6spy.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

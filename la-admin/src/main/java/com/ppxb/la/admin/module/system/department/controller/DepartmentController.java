@@ -22,32 +22,32 @@ public class DepartmentController {
     @Resource
     private DepartmentService departmentService;
 
-    @GetMapping("/department/treeList")
     @Operation(summary = "查询部门树形列表")
+    @GetMapping("/department/treeList")
     public ResponseDTO<List<DepartmentTreeVO>> departmentTree() {
         return departmentService.departmentTree();
     }
 
-    @PostMapping("/department/add")
     @Operation(summary = "添加部门")
+    @PostMapping("/department/add")
     public ResponseDTO<String> addDepartment(@Valid @RequestBody DepartmentAddForm addForm) {
         return departmentService.addDepartment(addForm);
     }
 
-    @PostMapping("/department/update")
     @Operation(summary = "更新部门")
+    @PostMapping("/department/update")
     public ResponseDTO<String> updateDepartment(@Valid @RequestBody DepartmentUpdateForm updateForm) {
         return departmentService.updateDepartment(updateForm);
     }
 
-    @GetMapping("/department/delete/{id}")
     @Operation(summary = "删除部门")
+    @GetMapping("/department/delete/{id}")
     public ResponseDTO<String> deleteDepartment(@PathVariable Long id) {
         return departmentService.deleteDepartment(id);
     }
 
-    @GetMapping("/department/listAll")
     @Operation(summary = "查询部门列表")
+    @GetMapping("/department/listAll")
     public ResponseDTO<List<DepartmentVO>> listAll() {
         return ResponseDTO.ok(departmentService.listAll());
     }

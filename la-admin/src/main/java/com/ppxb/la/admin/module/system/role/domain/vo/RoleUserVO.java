@@ -1,4 +1,4 @@
-package com.ppxb.la.admin.module.system.role.domain.entity.vo;
+package com.ppxb.la.admin.module.system.role.domain.vo;
 
 import lombok.Data;
 
