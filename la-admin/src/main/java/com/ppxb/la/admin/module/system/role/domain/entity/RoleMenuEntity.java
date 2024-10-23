@@ -11,14 +11,29 @@ import java.time.LocalDateTime;
 @TableName(value = "t_role_menu")
 public class RoleMenuEntity {
 
+    /**
+     * 角色目录ID
+     */
     @TableId(type = IdType.AUTO)
     private Long roleMenuId;
 
+    /**
+     * 角色ID
+     */
     private Long roleId;
 
+    /**
+     * 目录ID
+     */
     private Long menuId;
 
+    /**
+     * 创建时间
+     */
     private LocalDateTime createTime;
 
+    /**
+     * 更新时间
+     */
     private LocalDateTime updateTime;
 }

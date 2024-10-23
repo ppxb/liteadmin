@@ -16,7 +16,7 @@ public enum MenuPermsTypeEnum implements BaseEnum {
     }
 
     @Override
-    public Object getValue() {
+    public Integer getValue() {
         return value;
     }
 

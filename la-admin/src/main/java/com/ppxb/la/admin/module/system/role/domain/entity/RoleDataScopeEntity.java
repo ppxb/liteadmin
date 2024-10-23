@@ -8,28 +8,19 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-@TableName(value = "t_role_user")
-public class RoleUserEntity {
+@TableName(value = "t_role_data_scope")
+public class RoleDataScopeEntity {
 
-    /**
-     * 主键id
-     */
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    private Long roleId;
+    private Integer dataScopeType;
 
-    private Long userId;
+    private Integer viewType;
+
+    private Long roleId;
 
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
-
-    public RoleUserEntity() {
-    }
-
-    public RoleUserEntity(Long roleId, Long userId) {
-        this.roleId = roleId;
-        this.userId = userId;
-    }
 }

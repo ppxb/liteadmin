@@ -3,15 +3,15 @@
 
  Source Server         : local_mysql8
  Source Server Type    : MySQL
- Source Server Version : 80100 (8.1.0)
+ Source Server Version : 80200 (8.2.0)
  Source Host           : localhost:3306
  Source Schema         : lite_admin
 
  Target Server Type    : MySQL
- Target Server Version : 80100 (8.1.0)
+ Target Server Version : 80200 (8.2.0)
  File Encoding         : 65001
 
- Date: 22/10/2024 15:39:51
+ Date: 23/10/2024 23:14:35
 */
 
 SET NAMES utf8mb4;
@@ -31,7 +31,11 @@ CREATE TABLE `t_department`  (
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`department_id`) USING BTREE,
   INDEX `idx_parent_id`(`parent_id` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of t_department
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for t_menu
@@ -61,7 +65,11 @@ CREATE TABLE `t_menu`  (
   `update_user_id` bigint NULL DEFAULT NULL COMMENT '更新人',
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of t_menu
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for t_role
@@ -76,7 +84,29 @@ CREATE TABLE `t_role`  (
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`role_id`) USING BTREE,
   INDEX `uni_role_code`(`role_code` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of t_role
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for t_role_data_scope
+-- ----------------------------
+DROP TABLE IF EXISTS `t_role_data_scope`;
+CREATE TABLE `t_role_data_scope`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `data_scope_type` int NOT NULL COMMENT '数据范围ID',
+  `view_type` int NOT NULL COMMENT '数据范围类型',
+  `role_id` bigint NOT NULL COMMENT '角色ID',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of t_role_data_scope
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for t_role_menu
@@ -91,7 +121,29 @@ CREATE TABLE `t_role_menu`  (
   PRIMARY KEY (`role_menu_id`) USING BTREE,
   INDEX `idx_role_id`(`role_id` ASC) USING BTREE,
   INDEX `idx_menu_id`(`menu_id` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of t_role_menu
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for t_role_user
+-- ----------------------------
+DROP TABLE IF EXISTS `t_role_user`;
+CREATE TABLE `t_role_user`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `role_id` bigint NOT NULL COMMENT '角色ID',
+  `user_id` bigint NOT NULL COMMENT '用户ID',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `union_role_user`(`role_id` ASC, `user_id` ASC) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of t_role_user
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for t_user
@@ -115,6 +167,10 @@ CREATE TABLE `t_user`  (
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`user_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of t_user
+-- ----------------------------
 
 SET FOREIGN_KEY_CHECKS = 1;

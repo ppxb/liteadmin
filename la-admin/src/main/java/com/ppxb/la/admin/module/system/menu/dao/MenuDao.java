@@ -18,8 +18,7 @@ public interface MenuDao extends BaseMapper<MenuEntity> {
             @Param("parentId") Long parentId,
             @Param("deletedFlag") Boolean deletedFlag);
 
-    MenuEntity getByWebPerms(
-            @Param("webPerms") String webPerms, @Param("deletedFlag") Boolean deletedFlag);
+    MenuEntity getByWebPerms(@Param("webPerms") String webPerms, @Param("deletedFlag") Boolean deletedFlag);
 
     void deleteByMenuIdList(
             @Param("menuIdList") List<Long> menuIdList,
@@ -35,15 +34,14 @@ public interface MenuDao extends BaseMapper<MenuEntity> {
             @Param("menuType") Integer menuType,
             @Param("deletedFlag") Boolean deletedFlag);
 
-//    List<MenuVO> queryMenuByUserId(
-//            @Param("deletedFlag") Boolean deletedFlag,
-//            @Param("disabledFlag") Boolean disabledFlag,
-//            @Param("userId") Long userId);
+    List<MenuVO> queryMenuByUserId(
+            @Param("deletedFlag") Boolean deletedFlag,
+            @Param("disabledFlag") Boolean disabledFlag,
+            @Param("userId") Long userId);
 
     List<MenuEntity> queryMenuByType(@Param("menuType") Integer menuType,
                                      @Param("deletedFlag") Boolean deletedFlag,
                                      @Param("disabledFlag") Boolean disabledFlag);
 
     List<Long> selectMenuIdByParentIdList(@Param("menuIdList") List<Long> menuIdList);
-
 }

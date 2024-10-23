@@ -20,7 +20,7 @@ public interface RoleUserDao extends BaseMapper<RoleUserEntity> {
 
     List<RoleVO> selectRoleByUserId(@Param("userId") Long userId);
 
-    List<Long> selectRoleIdsByUserId(@Param("userId") Long userId);
+    List<Long> selectRoleIdByUserId(@Param("userId") Long userId);
 
     List<RoleUserEntity> selectRoleIdByUserIdList(@Param("userIdList") List<Long> userIdList);
 
@@ -28,7 +28,7 @@ public interface RoleUserDao extends BaseMapper<RoleUserEntity> {
 
     Set<Long> selectUserIdByRoleIdList(@Param("roleIdList") List<Long> roleIdList);
 
-    List<UserVO> selectRoleUserByName(Page page, @Param("queryForm") RoleUserQueryForm queryForm);
+    List<UserVO> selectRoleUserByName(Page<?> page, @Param("queryForm") RoleUserQueryForm queryForm);
 
     List<UserVO> selectUserByRoleId(@Param("roleId") Long roleId);
 

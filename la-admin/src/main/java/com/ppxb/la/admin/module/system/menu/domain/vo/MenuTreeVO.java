@@ -8,6 +8,6 @@ import java.util.List;
 @Data
 public class MenuTreeVO extends MenuVO {
 
-    @Schema(description = "菜单子集")
+    @Schema(description = "子菜单")
     private List<MenuTreeVO> children;
 }

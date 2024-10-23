@@ -71,4 +71,15 @@
             </foreach>
         </if>
     </select>
+
+    <select id="queryMenuByUserId" resultType="com.ppxb.la.admin.module.system.menu.domain.vo.MenuVO">
+        SELECT t_menu.*
+        FROM t_menu
+        LEFT JOIN t_role_menu ON t_role_menu.menu_id = t_menu.menu_id
+        LEFT JOIN t_role_user ON t_role_user.role_id = t_role_menu.role_id
+        WHERE t_menu.disabled_flag = #{disabledFlag} AND t_menu.deleted_flag =#{deletedFlag}
+        <if test="userId != null">
+            AND t_role_user.user_id = #{userId}
+        </if>
+    </select>
 </mapper>

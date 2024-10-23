@@ -30,6 +30,13 @@ public class MenuService {
 //    @Resource
 //    private List<RequestUrlVO> authUrl;
 
+    /**
+     * 添加菜单
+     *
+     * @param menuAddForm 添加菜单DTO
+     * @author ppxb
+     * @Date 2024/10/17 19:17
+     */
     public synchronized ResponseDTO<String> addMenu(MenuAddForm menuAddForm) {
         if (this.validateMenuName(menuAddForm)) {
             return ResponseDTO.userErrorParam("菜单名称已存在");
@@ -42,6 +49,13 @@ public class MenuService {
         return ResponseDTO.ok();
     }
 
+    /**
+     * 更新菜单
+     *
+     * @param menuUpdateForm 更新菜单DTO
+     * @author ppxb
+     * @Date 2024/10/17 19:17
+     */
     public synchronized ResponseDTO<String> updateMenu(MenuUpdateForm menuUpdateForm) {
         MenuEntity selectMenu = menuDao.selectById(menuUpdateForm.getMenuId());
         if (selectMenu == null) {
@@ -64,6 +78,14 @@ public class MenuService {
         return ResponseDTO.ok();
     }
 
+    /**
+     * 批量删除菜单
+     *
+     * @param menuIdList 目录ID列表
+     * @param userId     用户ID
+     * @author ppxb
+     * @Date 2024/10/17 19:17
+     */
     public synchronized ResponseDTO<String> batchDeleteMenu(List<Long> menuIdList, Long userId) {
         if (CollectionUtils.isEmpty(menuIdList)) {
             return ResponseDTO.userErrorParam("选择菜单不能为空");
@@ -73,6 +95,14 @@ public class MenuService {
         return ResponseDTO.ok();
     }
 
+    /**
+     * 递归删除菜单
+     *
+     * @param menuIdList 目录ID列表
+     * @param userId     用户ID
+     * @author ppxb
+     * @Date 2024/10/17 19:17
+     */
     private void recursiveDeleteChildren(List<Long> menuIdList, Long userId) {
         List<Long> childrenMenuIdList = menuDao.selectMenuIdByParentIdList(menuIdList);
         if (CollectionUtils.isEmpty(childrenMenuIdList)) {
@@ -82,6 +112,13 @@ public class MenuService {
         recursiveDeleteChildren(childrenMenuIdList, userId);
     }
 
+    /**
+     * 校验菜单名称
+     *
+     * @param menuDTO 菜单DTO
+     * @author ppxb
+     * @Date 2024/10/17 19:17
+     */
     public <T extends MenuBaseForm> Boolean validateMenuName(T menuDTO) {
         MenuEntity menu = menuDao.getByMenuName(menuDTO.getMenuName(), menuDTO.getParentId(), Boolean.FALSE);
         if (menuDTO instanceof MenuAddForm) {
@@ -94,6 +131,13 @@ public class MenuService {
         return true;
     }
 
+    /**
+     * 校验前端权限字符串
+     *
+     * @param menuDTO 菜单DTO
+     * @author ppxb
+     * @Date 2024/10/17 19:17
+     */
     public <T extends MenuBaseForm> Boolean validateWebPerms(T menuDTO) {
         MenuEntity menu = menuDao.getByWebPerms(menuDTO.getWebPerms(), Boolean.FALSE);
         if (menuDTO instanceof MenuAddForm) {
@@ -106,43 +150,87 @@ public class MenuService {
         return true;
     }
 
+    /**
+     * 查询菜单列表
+     *
+     * @param disabledFlag 是否禁用
+     * @author ppxb
+     * @Date 2024/10/17 19:17
+     */
     public List<MenuVO> queryMenuList(Boolean disabledFlag) {
         List<MenuVO> menuVOList = menuDao.queryMenuList(Boolean.FALSE, disabledFlag, null);
-        Map<Long, List<MenuVO>> parentMap = menuVOList.stream().collect(Collectors.groupingBy(MenuVO::getParentId, Collectors.toList()));
+        Map<Long, List<MenuVO>> parentMap = menuVOList
+                .stream()
+                .collect(Collectors.groupingBy(MenuVO::getParentId, Collectors.toList()));
         return this.filterNoParentMenu(parentMap, NumberUtils.LONG_ZERO);
     }
 
+
+    /**
+     * 过滤没有父级菜单的菜单列表
+     *
+     * @param parentMap 父级菜单Map
+     * @param parentId  父级菜单ID
+     * @author ppxb
+     * @Date 2024/10/17 19:17
+     */
     private List<MenuVO> filterNoParentMenu(Map<Long, List<MenuVO>> parentMap, Long parentId) {
         List<MenuVO> result = parentMap.getOrDefault(parentId, Lists.newArrayList());
         List<MenuVO> childMenu = Lists.newArrayList();
-        result.forEach(e -> {
-            List<MenuVO> menuLis = this.filterNoParentMenu(parentMap, e.getMenuId());
+        result.forEach(menu -> {
+            List<MenuVO> menuLis = this.filterNoParentMenu(parentMap, menu.getMenuId());
             childMenu.addAll(menuLis);
         });
         result.addAll(childMenu);
         return result;
     }
 
+    /**
+     * 查询菜单树
+     *
+     * @param onlyMenu 是否查询功能点
+     * @author ppxb
+     * @Date 2024/10/17 19:17
+     */
     public ResponseDTO<List<MenuTreeVO>> queryMenuTree(Boolean onlyMenu) {
         List<Integer> menuTypeList = Lists.newArrayList();
         if (onlyMenu) {
             menuTypeList = Lists.newArrayList(MenuTypeEnum.CATALOG.getValue(), MenuTypeEnum.MENU.getValue());
         }
         List<MenuVO> menuVOList = menuDao.queryMenuList(Boolean.FALSE, null, menuTypeList);
-        Map<Long, List<MenuVO>> parentMap = menuVOList.stream().collect(Collectors.groupingBy(MenuVO::getParentId, Collectors.toList()));
+        Map<Long, List<MenuVO>> parentMap = menuVOList
+                .stream()
+                .collect(Collectors.groupingBy(MenuVO::getParentId, Collectors.toList()));
         List<MenuTreeVO> menuTreeVOList = this.buildMenuTree(parentMap, NumberUtils.LONG_ZERO);
         return ResponseDTO.ok(menuTreeVOList);
     }
 
+    /**
+     * 构建菜单树
+     *
+     * @param parentMap 父级菜单Map
+     * @param parentId  父级菜单ID
+     * @author ppxb
+     * @Date 2024/10/17 19:17
+     */
     private List<MenuTreeVO> buildMenuTree(Map<Long, List<MenuVO>> parentMap, Long parentId) {
-        List<MenuTreeVO> result = parentMap.getOrDefault(parentId, Lists.newArrayList()).stream()
-                .map(e -> BeanUtil.copy(e, MenuTreeVO.class)).toList();
-        result.forEach(e -> {
-            e.setChildren(this.buildMenuTree(parentMap, e.getParentId()));
+        List<MenuTreeVO> result = parentMap
+                .getOrDefault(parentId, Lists.newArrayList())
+                .stream()
+                .map(menu -> BeanUtil.copy(menu, MenuTreeVO.class)).toList();
+        result.forEach(menu -> {
+            menu.setChildren(this.buildMenuTree(parentMap, menu.getParentId()));
         });
         return result;
     }
 
+    /**
+     * 查询菜单详情
+     *
+     * @param menuId 菜单ID
+     * @author ppxb
+     * @Date 2024/10/17 19:17
+     */
     public ResponseDTO<MenuVO> getMenuDetail(Long menuId) {
         MenuEntity selectMenu = menuDao.selectById(menuId);
         if (selectMenu == null) {

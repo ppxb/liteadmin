@@ -32,6 +32,7 @@ public class PageParam {
     private List<SortItem> sortItemList;
 
 
+    @Data
     public static class SortItem {
 
         @Schema(description = "true 正序 | false 倒序")

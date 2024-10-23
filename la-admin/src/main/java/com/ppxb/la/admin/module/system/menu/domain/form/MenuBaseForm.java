@@ -22,7 +22,7 @@ public class MenuBaseForm {
     @CheckEnum(value = MenuTypeEnum.class, message = "菜单类型错误")
     private Integer menuType;
 
-    @Schema(description = "父级菜单ID，无上级传0")
+    @Schema(description = "父级菜单ID，无父级菜单则传0")
     @NotNull(message = "父级菜单ID不能为空")
     private Long parentId;
 
@@ -69,5 +69,4 @@ public class MenuBaseForm {
 
     @Schema(description = "功能点关联菜单ID")
     private Long contentMenuId;
-
 }
