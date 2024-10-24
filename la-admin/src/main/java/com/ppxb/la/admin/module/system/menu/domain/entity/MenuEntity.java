@@ -1,8 +1,6 @@
 package com.ppxb.la.admin.module.system.menu.domain.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.ppxb.la.admin.module.system.menu.constant.MenuTypeEnum;
 import lombok.Data;
 
@@ -108,11 +106,13 @@ public class MenuEntity {
     /**
      * 创建时间
      */
+    @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;
 
     /**

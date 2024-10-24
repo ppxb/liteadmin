@@ -15,5 +15,5 @@ public class RoleMenuUpdateForm {
 
     @Schema(description = "菜单ID集合")
     @NotNull(message = "菜单ID不能为空")
-    private List<Long> meunIdList;
+    private List<Long> menuIdList;
 }

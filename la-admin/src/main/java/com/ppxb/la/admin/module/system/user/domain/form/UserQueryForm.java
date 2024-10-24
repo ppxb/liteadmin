@@ -30,3 +30,5 @@ public class UserQueryForm extends PageParam {
     @Schema(description = "是否被删除", hidden = true)
     private Boolean deletedFlag;
 }
+
+//TODO: start user form

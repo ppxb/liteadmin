@@ -45,8 +45,6 @@
           AND menu_type = #{menuType}
     </select>
 
-    <!--  TODO: add queryMenuByUserId-->
-
     <select id="queryMenuByType" resultType="com.ppxb.la.admin.module.system.menu.domain.entity.MenuEntity">
         SELECT *
         FROM t_menu
